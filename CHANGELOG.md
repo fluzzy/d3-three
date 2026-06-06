@@ -9,6 +9,15 @@ While on `0.x`, the public API may change between minor versions — pin a versi
 
 ## [Unreleased]
 
+### Planned
+
+- `<GridPlane3D>` — reference grid built from the in-plane scales' ticks.
+- A `d3-scale-chromatic` palette library for richer built-in `colorBy` palettes.
+
+## [0.2.0]
+
+Additive — no breaking changes to the v0.1 API.
+
 ### Added
 
 - **`<ChartLights>`** — opt-in lighting preset (`studio` 3-point rig / `flat`
@@ -25,10 +34,10 @@ While on `0.x`, the public API may change between minor versions — pin a versi
   `yBaseline`, band footprint) the built-in marks consume, for building custom
   instanced marks (`SeriesLayout3D` / `SeriesLayoutRow3D`).
 
-### Planned (v0.2)
+### Changed
 
-- `<GridPlane3D>` — reference grid built from the in-plane scales' ticks.
-- A `d3-scale-chromatic` palette library for richer built-in `colorBy` palettes.
+- Require Node **>=20** (was `>=18`); Node 18 is EOL.
+- Bundle is now ~13.6 KB gzip (was ~12.7 KB) — still well under the 25 KB budget.
 
 ## [0.1.0]
 
@@ -75,5 +84,6 @@ renderer and no `drei` dependency.
   tree-shaking, and a `~12.7 KB` (gzip) bundle. `react`, `react-dom`, `three`,
   and `@react-three/fiber` are peer dependencies and are never bundled.
 
-[Unreleased]: https://github.com/fluzzy/d3-three/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/fluzzy/d3-three/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/fluzzy/d3-three/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/fluzzy/d3-three/releases/tag/v0.1.0

@@ -1,6 +1,6 @@
 {
   "name": "d3-three",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "D3-powered 3D data visualization for React Three Fiber. Drop-in <Chart3D> components for your existing R3F <Canvas>.",
   "keywords": [
     "react",
