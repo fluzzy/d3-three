@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import type { InstancedMesh } from 'three'
-import { axisBandwidth, axisPosition, isBandScale } from '../core/scales'
-import { useChart3D } from '../hooks/useChart3D'
-import { writeBox } from '../internal/instancing'
-import { useInstancedSeries } from '../internal/useInstancedSeries'
-import { useWarnOnce } from '../internal/useWarnOnce'
-import type { Datum, SeriesBaseProps } from '../types'
+import { axisBandwidth, axisPosition, isBandScale } from '../../core/scales'
+import { useChart3D } from '../../hooks/useChart3D'
+import { writeBox } from '../../internal/instancing'
+import { useInstancedSeries } from '../../internal/useInstancedSeries'
+import { useWarnOnce } from '../../internal/useWarnOnce'
+import type { Datum, SeriesBaseProps } from '../../types'
 
 export type BarSeries3DProps = SeriesBaseProps
 

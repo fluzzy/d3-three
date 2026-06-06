@@ -1,9 +1,9 @@
 import type { ScaleLinear } from 'd3-scale'
 import { useEffect, useMemo, useState } from 'react'
 import { CanvasTexture, Sprite, SpriteMaterial } from 'three'
-import { axisPosition, isBandScale } from '../core/scales'
-import { useChart3D } from '../hooks/useChart3D'
-import type { AxisName, AxisScale } from '../types'
+import { axisPosition, isBandScale } from '../../core/scales'
+import { useChart3D } from '../../hooks/useChart3D'
+import type { AxisName, AxisScale } from '../../types'
 
 /** length (world units) of a tick mark drawn perpendicular to the axis. */
 const TICK_LENGTH = 0.15

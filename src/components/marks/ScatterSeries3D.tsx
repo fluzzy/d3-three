@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import type { InstancedMesh } from 'three'
-import { axisPosition, isBandScale } from '../core/scales'
-import { useChart3D } from '../hooks/useChart3D'
-import { writePoint } from '../internal/instancing'
-import { useInstancedSeries } from '../internal/useInstancedSeries'
-import { useWarnOnce } from '../internal/useWarnOnce'
-import type { Datum, SeriesBaseProps } from '../types'
+import { axisPosition, isBandScale } from '../../core/scales'
+import { useChart3D } from '../../hooks/useChart3D'
+import { writePoint } from '../../internal/instancing'
+import { useInstancedSeries } from '../../internal/useInstancedSeries'
+import { useWarnOnce } from '../../internal/useWarnOnce'
+import type { Datum, SeriesBaseProps } from '../../types'
 
 export interface ScatterSeries3DProps extends SeriesBaseProps {
   /** uniform sphere radius in world units (default 0.15). */

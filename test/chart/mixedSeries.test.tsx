@@ -6,8 +6,8 @@ import type { Datum } from '../../src/types'
 // a fresh module copy via resetModules + dynamic import to stay order-independent.
 async function loadComponents() {
   const chart = await import('../../src/components/Chart3D')
-  const bar = await import('../../src/components/BarSeries3D')
-  const scatter = await import('../../src/components/ScatterSeries3D')
+  const bar = await import('../../src/components/marks/BarSeries3D')
+  const scatter = await import('../../src/components/marks/ScatterSeries3D')
   return {
     Chart3D: chart.Chart3D,
     BarSeries3D: bar.BarSeries3D,

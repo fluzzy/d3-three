@@ -2,8 +2,8 @@ import ReactThreeTestRenderer from '@react-three/test-renderer'
 import type { ReactThreeTest } from '@react-three/test-renderer'
 import type { InstancedMesh } from 'three'
 import { describe, expect, it, vi } from 'vitest'
-import { BarSeries3D } from '../../src/components/BarSeries3D'
 import { Chart3D } from '../../src/components/Chart3D'
+import { BarSeries3D } from '../../src/components/marks/BarSeries3D'
 
 type TestInstance = ReactThreeTest.ReactThreeTestInstance
 

@@ -5,14 +5,14 @@
 export { Chart3D } from './components/Chart3D'
 export type { Chart3DProps } from './components/Chart3D'
 
-export { BarSeries3D } from './components/BarSeries3D'
-export type { BarSeries3DProps } from './components/BarSeries3D'
+export { BarSeries3D } from './components/marks/BarSeries3D'
+export type { BarSeries3DProps } from './components/marks/BarSeries3D'
 
-export { ScatterSeries3D } from './components/ScatterSeries3D'
-export type { ScatterSeries3DProps } from './components/ScatterSeries3D'
+export { ScatterSeries3D } from './components/marks/ScatterSeries3D'
+export type { ScatterSeries3DProps } from './components/marks/ScatterSeries3D'
 
-export { Axis3D } from './components/Axis3D'
-export type { Axis3DProps } from './components/Axis3D'
+export { Axis3D } from './components/marks/Axis3D'
+export type { Axis3DProps } from './components/marks/Axis3D'
 
 export { useChart3D } from './hooks/useChart3D'
 

@@ -1,8 +1,8 @@
 import ReactThreeTestRenderer from '@react-three/test-renderer'
 import { type MockInstance, afterEach, describe, expect, it, vi } from 'vitest'
-import { BarSeries3D } from '../../src/components/BarSeries3D'
 import { Chart3D } from '../../src/components/Chart3D'
-import { ScatterSeries3D } from '../../src/components/ScatterSeries3D'
+import { BarSeries3D } from '../../src/components/marks/BarSeries3D'
+import { ScatterSeries3D } from '../../src/components/marks/ScatterSeries3D'
 import type { Datum } from '../../src/types'
 
 // Under vitest NODE_ENV === 'test', so `isDev` is true and the one-shot dev

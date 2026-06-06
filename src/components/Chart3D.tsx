@@ -5,8 +5,8 @@ import { createScales } from '../core/scales'
 import { validateData } from '../core/validation'
 import { isDev } from '../internal/env'
 import type { Chart3DContextValue, Datum } from '../types'
-import { BarSeries3D } from './BarSeries3D'
-import { ScatterSeries3D } from './ScatterSeries3D'
+import { BarSeries3D } from './marks/BarSeries3D'
+import { ScatterSeries3D } from './marks/ScatterSeries3D'
 
 let warnedMixedSeries = false
 

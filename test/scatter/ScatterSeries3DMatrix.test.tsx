@@ -3,7 +3,7 @@ import type { ReactThreeTest } from '@react-three/test-renderer'
 import * as THREE from 'three'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Chart3D } from '../../src/components/Chart3D'
-import { ScatterSeries3D } from '../../src/components/ScatterSeries3D'
+import { ScatterSeries3D } from '../../src/components/marks/ScatterSeries3D'
 import { useChart3D } from '../../src/hooks/useChart3D'
 import type { Chart3DContextValue, Datum } from '../../src/types'
 
