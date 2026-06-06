@@ -1,0 +1,113 @@
+{
+  "name": "d3-three",
+  "version": "0.2.0",
+  "description": "D3-powered 3D data visualization for React Three Fiber. Drop-in <Chart3D> components for your existing R3F <Canvas>.",
+  "keywords": [
+    "react",
+    "three",
+    "react-three-fiber",
+    "r3f",
+    "d3",
+    "data-visualization",
+    "3d",
+    "chart",
+    "webgl",
+    "instancedmesh"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "d3-three contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d3-three/d3-three.git"
+  },
+  "homepage": "https://github.com/d3-three/d3-three#readme",
+  "bugs": {
+    "url": "https://github.com/d3-three/d3-three/issues"
+  },
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:build": "vitest run -c vitest.build.config.ts",
+    "typecheck": "tsc --noEmit",
+    "size": "size-limit",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "lint:pkg": "publint && attw --pack",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "d3-array": "^3.2.4",
+    "d3-scale": "^4.0.2"
+  },
+  "peerDependencies": {
+    "@react-three/fiber": "^9",
+    "react": ">=19 <19.3",
+    "react-dom": ">=19 <19.3",
+    "three": ">=0.156"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.3",
+    "@biomejs/biome": "^2.4.16",
+    "@react-three/fiber": "^9.6.1",
+    "@react-three/test-renderer": "^9.1.0",
+    "@size-limit/preset-small-lib": "^12.1.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/d3-array": "^3.2.2",
+    "@types/d3-scale": "^4.0.9",
+    "@types/node": "^25.9.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.184.1",
+    "jsdom": "^29.1.1",
+    "publint": "^0.3.21",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "size-limit": "^12.1.0",
+    "three": "^0.184.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.5",
+    "vitest": "^4.1.8"
+  },
+  "size-limit": [
+    {
+      "name": "ESM (gzip)",
+      "path": "dist/index.mjs",
+      "gzip": true,
+      "limit": "25 KB",
+      "ignore": [
+        "react",
+        "react-dom",
+        "three",
+        "@react-three/fiber"
+      ]
+    }
+  ],
+  "packageManager": "pnpm@9.15.0"
+}
