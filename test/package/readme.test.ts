@@ -24,6 +24,7 @@ describe('README documents every shipped public export', () => {
       'BarSeries3D',
       'ScatterSeries3D',
       'Axis3D',
+      'ChartLights',
       'useChart3D',
       'useSeriesLayout3D',
       'axisPosition',

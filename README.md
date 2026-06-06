@@ -67,7 +67,7 @@ export function Chart() {
 
 `<Chart3D>` must live inside a `<Canvas>` — it reads R3F's store to fail fast otherwise. Camera, lights, and any `OrbitControls` are yours to configure.
 
-> **Lighting is the host's job in v0.1.** The series default to `meshStandardMaterial`, which is *unlit* — without lights in the scene it renders **black**. Add your own `ambientLight` / `directionalLight` (shown above). A drop-in `<ChartLights>` helper is on the [v0.2 roadmap](#roadmap).
+> **Lighting is the host's job.** The series default to `meshStandardMaterial`, which is *unlit* — without lights in the scene it renders **black**. Drop in the [`<ChartLights>`](#chartlights) preset, or add your own `ambientLight` / `directionalLight` (shown above).
 
 ## One series type per chart
 
@@ -136,6 +136,28 @@ One chart axis: a base line spanning the scale's range, a tick mark per tick, an
 | `fontSize` | `number` | `0.3` |
 
 `<Axis3D axis="z" />` renders nothing when the chart has no `zKey`.
+
+### `<ChartLights>`
+
+An **opt-in** lighting preset you drop inside your `<Canvas>` so the series (which use the *unlit-without-lights* `meshStandardMaterial`) aren't black. It renders only Three.js lights — it never reads the chart context or owns the scene, so a host that already lights its scene just skips it.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `preset` | `'studio' \| 'flat'` | `'studio'` | `studio` = soft 3-point rig (ambient + key + fill); `flat` = a single shadeless ambient. |
+| `intensity` | `number` | `1` | Uniform multiplier over every light in the preset. |
+| `ambientColor` | `string` | `'#ffffff'` | CSS color for the ambient / fill light. |
+| `keyColor` | `string` | `'#ffffff'` | CSS color for the key directional light (`studio` only — ignored by `flat`). |
+
+```tsx
+<Canvas>
+  <ChartLights />
+  <Chart3D data={sales} xKey="month" yKey="revenue">
+    <BarSeries3D /><Axis3D axis="x" /><Axis3D axis="y" />
+  </Chart3D>
+</Canvas>
+```
+
+Need a bespoke rig? Drop raw `<ambientLight>` / `<directionalLight>` instead — `<ChartLights>` is a convenience, not a requirement.
 
 ### `useChart3D()`
 
@@ -216,8 +238,7 @@ In short: `d3-three` owns the math and the rendering; **the consumer owns input 
 **v0.2** (all additive — no breaking changes)
 
 - `<GridPlane3D>` — a reference grid built from the in-plane scales' ticks.
-- `<ChartLights>` — a drop-in lighting helper so the series aren't black without host lights.
-- `colorBy` + a `d3-scale-chromatic` palette library for automatic per-datum / per-group coloring.
+- A `d3-scale-chromatic` palette library for richer built-in `colorBy` palettes.
 - `<ForceGraph3D>` — a force-directed network series via `d3-force-3d` (the inherently-spatial flagship).
 - Real text labels via `troika-three-text` (sharper than the current sprite labels).
 - Standalone `useScale()` / `useColorScale()` hooks (public access to the scale machinery that's internal in v0.1).

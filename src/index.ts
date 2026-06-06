@@ -14,6 +14,9 @@ export type { ScatterSeries3DProps } from './components/marks/ScatterSeries3D'
 export { Axis3D } from './components/marks/Axis3D'
 export type { Axis3DProps } from './components/marks/Axis3D'
 
+export { ChartLights } from './components/ChartLights'
+export type { ChartLightsProps, ChartLightsPreset } from './components/ChartLights'
+
 export { useChart3D } from './hooks/useChart3D'
 
 export { useSeriesLayout3D } from './hooks/useSeriesLayout3D'

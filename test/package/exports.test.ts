@@ -27,8 +27,11 @@ describe('public API surface', () => {
     expect((api as Record<string, unknown>).default).toBeUndefined()
   })
 
-  it('does NOT export v0.2 symbols (GridPlane3D, ChartLights)', () => {
+  it('exports the ChartLights lighting preset component', () => {
+    expect(typeof api.ChartLights).toBe('function')
+  })
+
+  it('does NOT export not-yet-shipped v0.2 symbols (GridPlane3D)', () => {
     expect((api as Record<string, unknown>).GridPlane3D).toBeUndefined()
-    expect((api as Record<string, unknown>).ChartLights).toBeUndefined()
   })
 })
