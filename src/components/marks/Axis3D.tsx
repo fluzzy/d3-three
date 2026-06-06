@@ -13,7 +13,10 @@ export interface Axis3DProps {
   axis: AxisName
   /** approximate tick count for linear axes (ignored by band axes; default 5). */
   tickCount?: number
-  /** formats a tick value to its label string (defaults to `String(value)`). */
+  /**
+   * formats a tick value to its label string (defaults to `String(value)`).
+   * Safe to pass inline — labels only re-rasterize when the output text changes.
+   */
   tickFormat?: (value: unknown) => string
   /** axis line / tick color (default `#888888`). */
   color?: string
@@ -127,6 +130,16 @@ export function Axis3D({
     return new Float32Array(verts)
   }, [scale, axis, ticks, xMin])
 
+  // The label strings, JSON-encoded as a value-stable key. Gating the effect on
+  // this key (instead of on tickFormat's identity) means an inline tickFormat
+  // that returns the same strings no longer re-rasterizes every CanvasTexture —
+  // a real text change, or a color change (baked into the canvas), still does.
+  const labelKey = useMemo(
+    () =>
+      JSON.stringify(ticks.map(({ value }) => (tickFormat ? tickFormat(value) : String(value)))),
+    [ticks, tickFormat],
+  )
+
   // Label sprites are built AFTER commit (in an effect, never in render/useMemo)
   // so a half-built CanvasTexture/Sprite can't leak on an aborted render or a
   // StrictMode double-invoke. The cleanup disposes exactly the sprites it made.
@@ -136,10 +149,11 @@ export function Axis3D({
       setLabels([])
       return
     }
+    const texts = JSON.parse(labelKey) as string[]
     const sprites: Sprite[] = []
-    for (const { value, pos } of ticks) {
-      const text = tickFormat ? tickFormat(value) : String(value)
-      const sprite = createTextSprite(text, { color, fontSize })
+    for (let i = 0; i < ticks.length; i++) {
+      const { pos } = ticks[i]
+      const sprite = createTextSprite(texts[i], { color, fontSize })
       if (!sprite) continue
       const labelOffset = fontSize * 0.75
       if (axis === 'x') sprite.position.set(pos, -TICK_LENGTH - labelOffset, 0)
@@ -155,10 +169,15 @@ export function Axis3D({
         material.dispose()
       }
     }
-  }, [showLabels, scale, ticks, tickFormat, color, fontSize, axis, xMin])
+  }, [showLabels, scale, ticks, labelKey, color, fontSize, axis, xMin])
 
   if (!scale || !positions) return null
 
+  // Known limitation (deferred to v0.2): when `positions` changes, R3F builds a
+  // new THREE.BufferAttribute. three's BufferAttribute.dispose() is a WebGPU-only
+  // no-op, so the previous attribute's GL buffer is freed only when the geometry
+  // itself is disposed (on unmount). For an axis line (a few dozen floats) this
+  // is negligible; a ref-owned, in-place attribute lands with the label rework.
   return (
     <group>
       <lineSegments>
