@@ -25,6 +25,8 @@ export type { SeriesLayout3D, SeriesLayoutRow3D } from './hooks/useSeriesLayout3
 export { axisBandwidth, axisPosition, isBandScale } from './core/scales'
 export type { ChartScales } from './core/scales'
 
+export { DEFAULT_PALETTE } from './core/colorBy'
+
 export type {
   Datum,
   AxisScale,
@@ -32,6 +34,8 @@ export type {
   AxisName,
   ChartDimensions,
   Chart3DContextValue,
+  ColorAccessor,
+  ColorByConfig,
   SeriesBaseProps,
   SeriesEventHandler,
 } from './types'

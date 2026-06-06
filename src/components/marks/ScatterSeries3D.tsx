@@ -1,5 +1,6 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import type { InstancedMesh } from 'three'
+import { COLORBY_INVALID_WARNING, resolveColors } from '../../core/colorBy'
 import { isBandScale } from '../../core/scales'
 import { useSeriesLayout3D } from '../../hooks/useSeriesLayout3D'
 import { writePoint } from '../../internal/instancing'
@@ -29,6 +30,7 @@ const CONTINUOUS_AXIS_WARNING =
 export function ScatterSeries3D({
   color = 'steelblue',
   highlightColor = '#ffaa00',
+  colorBy,
   onClick,
   onPointerOver,
   onPointerOut,
@@ -41,6 +43,12 @@ export function ScatterSeries3D({
   useWarnOnce(zKey ? undefined : FLAT_PLANE_WARNING)
   const hasBandAxis = isBandScale(xScale) || (zScale !== undefined && isBandScale(zScale))
   useWarnOnce(hasBandAxis ? CONTINUOUS_AXIS_WARNING : undefined)
+
+  const colorResult = useMemo(
+    () => resolveColors(chart.data, colorBy, color),
+    [chart.data, colorBy, color],
+  )
+  useWarnOnce(colorResult?.invalid ? COLORBY_INVALID_WARNING : undefined)
 
   const writeAll = useCallback(
     (mesh: InstancedMesh) => {
@@ -55,6 +63,7 @@ export function ScatterSeries3D({
     chart,
     color,
     highlightColor,
+    colors: colorResult?.colors,
     writeAll,
     onClick,
     onPointerOver,

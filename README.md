@@ -206,7 +206,27 @@ const { rows, yBaseline, bandWidth, bandDepth, chart } = useSeriesLayout3D()
 
 ## Colors
 
-v0.1 colors a series with the single **`color`** prop (a CSS color string, default `steelblue`), applied per-instance via `setColorAt`. Any string `three.Color` accepts works. Automatic per-datum palettes (`colorBy`) and a `d3-scale-chromatic` palette library are on the [v0.2 roadmap](#roadmap) — purely additive, no breaking change.
+The single **`color`** prop (a CSS color string, default `steelblue`) paints every instance, applied per-instance via `setColorAt`. Any string `three.Color` accepts works.
+
+For per-datum coloring, pass **`colorBy`** to `BarSeries3D` / `ScatterSeries3D`. The shorthand is an accessor; the full form is `{ value, palette }`:
+
+```tsx
+// Categorical (zero-config): a string accessor maps each category through DEFAULT_PALETTE.
+<BarSeries3D colorBy={(d) => d.region} />
+
+// Custom categorical palette (wraps if shorter than the domain):
+<BarSeries3D colorBy={{ value: (d) => d.team, palette: ['#e6194b', '#3cb44b', '#4363d8'] }} />
+
+// Continuous: you supply the number → color function (wrap any d3 scale).
+<ScatterSeries3D colorBy={{ value: (d) => d.score, palette: (v) => heat(v) }} />
+
+// Raw: the accessor already returns CSS color strings.
+<ScatterSeries3D colorBy={{ value: (d) => d.cssColor, palette: 'raw' }} />
+```
+
+- A bare string accessor with no `palette` is **categorical** through the built-in **`DEFAULT_PALETTE`** (a 10-color Tableau set, exported for reuse). Raw CSS colors are the explicit `palette: 'raw'` opt-in.
+- Hover still overrides one instance imperatively and restores it to **its own** `colorBy` color — zero React re-renders, exactly like the flat-`color` path.
+- A row that can't resolve (wrong value type, unparseable color string) falls back to `color` and dev-warns once; it never throws. A `d3-scale-chromatic` palette library is on the [roadmap](#roadmap).
 
 ## Performance
 

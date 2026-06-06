@@ -30,6 +30,7 @@ describe('README documents every shipped public export', () => {
       'axisPosition',
       'isBandScale',
       'axisBandwidth',
+      'DEFAULT_PALETTE',
     ]
     // Sanity: the source really exports exactly this runtime surface.
     expect(publicNames.sort()).toEqual([...documentedSurface].sort())

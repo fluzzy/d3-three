@@ -69,11 +69,27 @@ export type SeriesEventHandler = (
   index: number,
 ) => void
 
+/** Maps a row to a CSS color string, or to a domain value the palette resolves. */
+export type ColorAccessor = (datum: Datum, index: number) => string | number
+
+export interface ColorByConfig {
+  value: ColorAccessor
+  /**
+   * - omitted: categorical via `DEFAULT_PALETTE` (string values → palette colors)
+   * - `string[]`: categorical with a custom palette (wraps if shorter than the domain)
+   * - `(value: number) => string`: continuous; you supply the number→color function
+   * - `'raw'`: `value` already returns CSS color strings, used as-is
+   */
+  palette?: string[] | ((value: number) => string) | 'raw'
+}
+
 export interface SeriesBaseProps {
-  /** single CSS color for every instance (default `steelblue`). */
+  /** single CSS color for every instance (default `steelblue`); the fallback when `colorBy` is absent or a row fails to resolve. */
   color?: string
   /** color applied to the hovered instance (default `#ffaa00`). */
   highlightColor?: string
+  /** per-instance base color from each datum (accessor shorthand or full config); overrides `color`. */
+  colorBy?: ColorAccessor | ColorByConfig
   /** fired when an instance is clicked. */
   onClick?: SeriesEventHandler
   /** fired when the pointer enters an instance. */

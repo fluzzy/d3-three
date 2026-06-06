@@ -20,6 +20,8 @@ export interface InstancedSeriesOptions {
   chart: Chart3DContextValue
   color: string
   highlightColor: string
+  /** optional per-instance base colors (length === rows); overrides `color`. */
+  colors?: Color[]
   /** the only mark-specific logic; memoize with useCallback. */
   writeAll: WriteAll
   onClick?: SeriesEventHandler
@@ -43,7 +45,8 @@ export interface InstancedSeriesHandle {
  * imperative zero-rerender hover. Marks supply only `writeAll` and the geometry.
  */
 export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSeriesHandle {
-  const { chart, color, highlightColor, writeAll, onClick, onPointerOver, onPointerOut } = opts
+  const { chart, color, highlightColor, colors, writeAll, onClick, onPointerOver, onPointerOut } =
+    opts
   const ref = useRef<InstancedMesh | null>(null)
   const hoveredRef = useRef(-1)
   const invalidate = useThree((s) => s.invalidate)
@@ -69,11 +72,11 @@ export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSerie
     const mesh = ref.current
     if (!mesh) return
     const rows = chart.data
-    for (let i = 0; i < rows.length; i++) mesh.setColorAt(i, base)
+    for (let i = 0; i < rows.length; i++) mesh.setColorAt(i, colors?.[i] ?? base)
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
     hoveredRef.current = -1
     invalidate()
-  }, [chart.data, base, invalidate])
+  }, [chart.data, base, colors, invalidate])
 
   // Imperative hover: no React state → zero series re-renders.
   const setHover = (id: number) => {
@@ -82,7 +85,7 @@ export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSerie
     const prev = hoveredRef.current
     if (id === prev) return
     const count = chart.data.length
-    if (prev >= 0 && prev < count) mesh.setColorAt(prev, base)
+    if (prev >= 0 && prev < count) mesh.setColorAt(prev, colors?.[prev] ?? base)
     if (id >= 0 && id < count) mesh.setColorAt(id, highlight)
     mesh.instanceColor.needsUpdate = true
     hoveredRef.current = id

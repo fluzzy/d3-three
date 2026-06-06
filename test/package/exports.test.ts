@@ -23,6 +23,11 @@ describe('public API surface', () => {
     expect(typeof api.useSeriesLayout3D).toBe('function')
   })
 
+  it('exports the DEFAULT_PALETTE for categorical colorBy', () => {
+    expect(Array.isArray(api.DEFAULT_PALETTE)).toBe(true)
+    expect(api.DEFAULT_PALETTE).toHaveLength(10)
+  })
+
   it('has no default export', () => {
     expect((api as Record<string, unknown>).default).toBeUndefined()
   })
