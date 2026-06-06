@@ -9,13 +9,17 @@
 // 'webgl*' and delegates everything else to whatever was on the prototype
 // before it — i.e. this wrapper — so '2d' still resolves to null after RTTR
 // loads. Real 2D text rendering is exercised in the browser example, not here.
-const originalGetContext = HTMLCanvasElement.prototype.getContext
+// Guarded so the shared setup is a no-op under the node environment (the SSR
+// import test), where there is no HTMLCanvasElement.
+if (typeof HTMLCanvasElement !== 'undefined') {
+  const originalGetContext = HTMLCanvasElement.prototype.getContext
 
-HTMLCanvasElement.prototype.getContext = function (
-  this: HTMLCanvasElement,
-  contextId: string,
-  ...args: unknown[]
-): unknown {
-  if (contextId === '2d') return null
-  return (originalGetContext as (...a: unknown[]) => unknown).call(this, contextId, ...args)
-} as typeof HTMLCanvasElement.prototype.getContext
+  HTMLCanvasElement.prototype.getContext = function (
+    this: HTMLCanvasElement,
+    contextId: string,
+    ...args: unknown[]
+  ): unknown {
+    if (contextId === '2d') return null
+    return (originalGetContext as (...a: unknown[]) => unknown).call(this, contextId, ...args)
+  } as typeof HTMLCanvasElement.prototype.getContext
+}
