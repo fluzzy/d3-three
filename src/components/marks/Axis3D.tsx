@@ -96,7 +96,6 @@ export function Axis3D({
   // Pick the scale for this axis. z is optional — bail out before any work.
   const scale: AxisScale | undefined = axis === 'x' ? xScale : axis === 'y' ? yScale : zScale
   const xMin = xScale.range()[0]
-  const height = yScale.range()[1]
 
   // Tick values + world positions, derived from the scale.
   const ticks = useMemo<Tick[]>(() => {
@@ -119,14 +118,14 @@ export function Axis3D({
       verts.push(r0, 0, 0, r1, 0, 0)
       for (const { pos } of ticks) verts.push(pos, 0, 0, pos, -TICK_LENGTH, 0)
     } else if (axis === 'y') {
-      verts.push(xMin, 0, 0, xMin, height, 0)
+      verts.push(xMin, r0, 0, xMin, r1, 0)
       for (const { pos } of ticks) verts.push(xMin, pos, 0, xMin - TICK_LENGTH, pos, 0)
     } else {
       verts.push(xMin, 0, r0, xMin, 0, r1)
       for (const { pos } of ticks) verts.push(xMin, 0, pos, xMin - TICK_LENGTH, 0, pos)
     }
     return new Float32Array(verts)
-  }, [scale, axis, ticks, xMin, height])
+  }, [scale, axis, ticks, xMin])
 
   // Label sprites are built AFTER commit (in an effect, never in render/useMemo)
   // so a half-built CanvasTexture/Sprite can't leak on an aborted render or a
