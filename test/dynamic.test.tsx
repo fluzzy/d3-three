@@ -24,44 +24,61 @@ function findInstancedMeshes(scene: TestInstance): THREE.InstancedMesh[] {
     .map((n) => n.instance as THREE.InstancedMesh)
 }
 
-describe('BarSeries3D dynamic data (args-driven recreation)', () => {
-  it('tracks InstancedMesh.count to data.length across updates and never throws', async () => {
+describe('BarSeries3D dynamic data (over-provisioned capacity, mesh reuse)', () => {
+  it('reuses one InstancedMesh across row-count changes within capacity, tracking count', async () => {
     const renderer = await ReactThreeTestRenderer.create(
       <Chart3D data={TWO} xKey="m" yKey="v">
         <BarSeries3D />
       </Chart3D>,
     )
 
-    {
-      const meshes = findInstancedMeshes(renderer.scene)
-      expect(meshes).toHaveLength(1)
-      expect(meshes[0].count).toBe(TWO.length)
-    }
+    const first = findInstancedMeshes(renderer.scene)
+    expect(first).toHaveLength(1)
+    expect(first[0].count).toBe(TWO.length)
+    const mesh = first[0]
 
-    // Grow: 2 -> 4. The instancedMesh `args` capacity is data.length-driven, so
-    // the node is recreated; count must follow the new row count.
+    // Grow 2 -> 4: the GPU capacity is over-provisioned, so the data still fits
+    // and the SAME host InstancedMesh is reused (no dispose/realloc); only
+    // mesh.count follows the new row count.
     await renderer.update(
       <Chart3D data={FOUR} xKey="m" yKey="v">
         <BarSeries3D />
       </Chart3D>,
     )
     {
-      const meshes = findInstancedMeshes(renderer.scene)
-      expect(meshes).toHaveLength(1)
-      expect(meshes[0].count).toBe(FOUR.length)
+      const grown = findInstancedMeshes(renderer.scene)
+      expect(grown).toHaveLength(1)
+      expect(grown[0]).toBe(mesh) // reused, not recreated
+      expect(grown[0].count).toBe(FOUR.length)
     }
 
-    // Shrink: 4 -> 1.
+    // Shrink 4 -> 1: still the same mesh.
     await renderer.update(
       <Chart3D data={ONE} xKey="m" yKey="v">
         <BarSeries3D />
       </Chart3D>,
     )
     {
-      const meshes = findInstancedMeshes(renderer.scene)
-      expect(meshes).toHaveLength(1)
-      expect(meshes[0].count).toBe(ONE.length)
+      const shrunk = findInstancedMeshes(renderer.scene)
+      expect(shrunk).toHaveLength(1)
+      expect(shrunk[0]).toBe(mesh)
+      expect(shrunk[0].count).toBe(ONE.length)
     }
+
+    await renderer.unmount()
+  })
+
+  it('renders thousands of rows as a single InstancedMesh (one draw call)', async () => {
+    const many = Array.from({ length: 2000 }, (_, i) => ROW(`c${i}`, (i % 50) + 1))
+    const renderer = await ReactThreeTestRenderer.create(
+      <Chart3D data={many} xKey="m" yKey="v">
+        <BarSeries3D />
+      </Chart3D>,
+    )
+
+    const meshes = findInstancedMeshes(renderer.scene)
+    expect(meshes).toHaveLength(1)
+    expect(meshes[0].count).toBe(2000)
 
     await renderer.unmount()
   })

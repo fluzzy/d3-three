@@ -1,9 +1,8 @@
-import { Color, type InstancedMesh, Object3D } from 'three'
+import { type InstancedMesh, Object3D } from 'three'
 
-// Reused scratch objects. React render + layout effects run synchronously, so a
+// Reused scratch object. React render + layout effects run synchronously, so a
 // single module-scope dummy is safe and avoids per-update allocation.
 const dummy = new Object3D()
-const scratchColor = new Color()
 
 /** Minimum scale for a zero-height/size instance so the matrix stays invertible. */
 const MIN_EXTENT = 1e-6
@@ -57,10 +56,3 @@ export function writePoint(mesh: InstancedMesh, i: number, p: PointInstance): vo
   dummy.updateMatrix()
   mesh.setMatrixAt(i, dummy.matrix)
 }
-
-/** Sets instance `i`'s color from a CSS string (auto-creates `instanceColor`). */
-export function writeColor(mesh: InstancedMesh, i: number, css: string): void {
-  mesh.setColorAt(i, scratchColor.set(css))
-}
-
-export { dummy, scratchColor }
