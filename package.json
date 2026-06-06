@@ -44,7 +44,9 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -89,7 +91,7 @@
     "size-limit": "^11.1.6",
     "three": "^0.184.0",
     "tsup": "^8.5.1",
-    "typescript": "^5.7.2",
+    "typescript": "^5.9.3",
     "vite": "^6.0.0",
     "vitest": "^4.1.8"
   },
@@ -99,7 +101,12 @@
       "path": "dist/index.mjs",
       "gzip": true,
       "limit": "25 KB",
-      "ignore": ["react", "react-dom", "three", "@react-three/fiber"]
+      "ignore": [
+        "react",
+        "react-dom",
+        "three",
+        "@react-three/fiber"
+      ]
     }
   ],
   "packageManager": "pnpm@9.15.0"
