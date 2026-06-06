@@ -13,7 +13,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
  * `size-limit` runs and reports under the 25 KB budget.
  */
 
-const ROOT = resolve(__dirname, '..')
+const ROOT = resolve(__dirname, '..', '..')
 const DIST = resolve(ROOT, 'dist')
 const ESM = resolve(DIST, 'index.mjs')
 const CJS = resolve(DIST, 'index.js')

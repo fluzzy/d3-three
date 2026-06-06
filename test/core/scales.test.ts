@@ -7,7 +7,7 @@ import {
   inferScaleType,
   isBandScale,
   safeLinearDomain,
-} from '../src/core/scales'
+} from '../../src/core/scales'
 
 describe('inferScaleType', () => {
   it('returns "linear" when every present value is a finite number', () => {

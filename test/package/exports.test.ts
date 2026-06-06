@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import * as api from '../src/index'
+import * as api from '../../src/index'
 
 describe('public API surface', () => {
   it('named-exports the v0.1 components + hook', () => {

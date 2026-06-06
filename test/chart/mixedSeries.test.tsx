@@ -1,13 +1,13 @@
 import ReactThreeTestRenderer from '@react-three/test-renderer'
 import { type MockInstance, afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { Datum } from '../src/types'
+import type { Datum } from '../../src/types'
 
 // The mixed-series warning is one-shot (module-scoped guard), so each test gets
 // a fresh module copy via resetModules + dynamic import to stay order-independent.
 async function loadComponents() {
-  const chart = await import('../src/components/Chart3D')
-  const bar = await import('../src/components/BarSeries3D')
-  const scatter = await import('../src/components/ScatterSeries3D')
+  const chart = await import('../../src/components/Chart3D')
+  const bar = await import('../../src/components/BarSeries3D')
+  const scatter = await import('../../src/components/ScatterSeries3D')
   return {
     Chart3D: chart.Chart3D,
     BarSeries3D: bar.BarSeries3D,

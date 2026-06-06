@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest'
  * this pins the contract at the source.
  */
 
-const SRC = resolve(__dirname, '..', 'src')
+const SRC = resolve(__dirname, '..', '..', 'src')
 
 function sourceFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {

@@ -1,9 +1,9 @@
 import ReactThreeTestRenderer from '@react-three/test-renderer'
 import { render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Chart3D } from '../src/components/Chart3D'
-import { useChart3D } from '../src/hooks/useChart3D'
-import type { Chart3DContextValue } from '../src/types'
+import { Chart3D } from '../../src/components/Chart3D'
+import { useChart3D } from '../../src/hooks/useChart3D'
+import type { Chart3DContextValue } from '../../src/types'
 
 const DATA = [
   { x: 'Jan', y: 10 },

@@ -1,7 +1,7 @@
 import ReactThreeTestRenderer from '@react-three/test-renderer'
 import { describe, expect, it } from 'vitest'
-import { Axis3D } from '../src/components/Axis3D'
-import { Chart3D } from '../src/components/Chart3D'
+import { Axis3D } from '../../src/components/Axis3D'
+import { Chart3D } from '../../src/components/Chart3D'
 
 const data = [
   { x: 'A', y: 10 },

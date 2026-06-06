@@ -28,7 +28,7 @@ describe('production is silent (no dev warn)', () => {
   it('emits ZERO warnings when NODE_ENV === "production", even with invalid rows', async () => {
     process.env.NODE_ENV = 'production'
     // Re-import so `internal/env`'s `isDev` is recomputed as false.
-    const { validateData } = await import('../src/core/validation')
+    const { validateData } = await import('../../src/core/validation')
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
     const result = validateData(
@@ -48,7 +48,7 @@ describe('production is silent (no dev warn)', () => {
 
   it('DOES warn in dev (NODE_ENV !== "production") — proves the silence above is env-driven', async () => {
     process.env.NODE_ENV = 'development'
-    const { validateData } = await import('../src/core/validation')
+    const { validateData } = await import('../../src/core/validation')
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
     validateData([{ x: 1, y: Number.NaN }], OPTS)
@@ -60,7 +60,7 @@ describe('production is silent (no dev warn)', () => {
 describe('the filtered array is the count/instanceId source of truth', () => {
   it('preserves input order with invalid rows removed (index i === i-th valid row)', async () => {
     vi.resetModules()
-    const { validateData } = await import('../src/core/validation')
+    const { validateData } = await import('../../src/core/validation')
     vi.spyOn(console, 'warn').mockImplementation(() => {})
 
     const raw = [
@@ -86,7 +86,7 @@ describe('the filtered array is the count/instanceId source of truth', () => {
 
   it('does NOT clamp invalid rows to the origin — it removes them (no phantom marks)', async () => {
     vi.resetModules()
-    const { validateData } = await import('../src/core/validation')
+    const { validateData } = await import('../../src/core/validation')
     vi.spyOn(console, 'warn').mockImplementation(() => {})
 
     // A clamp-to-0 impl would keep this row (coerced to {x:0,y:0}); filtering drops it.

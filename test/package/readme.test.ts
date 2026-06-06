@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import pkg from '../package.json'
-import * as api from '../src/index'
+import pkg from '../../package.json'
+import * as api from '../../src/index'
 
 /**
  * README accuracy. Nothing else verifies that the README actually documents the
@@ -13,7 +13,7 @@ import * as api from '../src/index'
  * users.
  */
 
-const README = readFileSync(resolve(__dirname, '..', 'README.md'), 'utf8')
+const README = readFileSync(resolve(__dirname, '..', '..', 'README.md'), 'utf8')
 
 describe('README documents every shipped public export', () => {
   it('names each exported component + hook somewhere in the README', () => {
@@ -61,7 +61,10 @@ describe('README API details match the source', () => {
     // The hook's friendly throw (verified at runtime in Chart3D.test.tsx) is the
     // string the README quotes. Cross-check the README against the SOURCE literal
     // so a future message edit that diverges from the docs fails here.
-    const hookSrc = readFileSync(resolve(__dirname, '..', 'src', 'hooks', 'useChart3D.ts'), 'utf8')
+    const hookSrc = readFileSync(
+      resolve(__dirname, '..', '..', 'src', 'hooks', 'useChart3D.ts'),
+      'utf8',
+    )
     const message = 'useChart3D() must be called inside a <Chart3D>'
     expect(hookSrc).toContain(message)
     expect(README).toContain(message)

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { validateData } from '../src/core/validation'
+import { validateData } from '../../src/core/validation'
 
 const OPTS = { xKey: 'x', yKey: 'y' }
 const OPTS_Z = { xKey: 'x', yKey: 'y', zKey: 'z' }

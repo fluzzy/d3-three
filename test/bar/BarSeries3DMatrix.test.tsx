@@ -2,10 +2,10 @@ import ReactThreeTestRenderer from '@react-three/test-renderer'
 import type { ReactThreeTest } from '@react-three/test-renderer'
 import * as THREE from 'three'
 import { describe, expect, it } from 'vitest'
-import { BarSeries3D } from '../src/components/BarSeries3D'
-import { Chart3D } from '../src/components/Chart3D'
-import { useChart3D } from '../src/hooks/useChart3D'
-import type { Chart3DContextValue } from '../src/types'
+import { BarSeries3D } from '../../src/components/BarSeries3D'
+import { Chart3D } from '../../src/components/Chart3D'
+import { useChart3D } from '../../src/hooks/useChart3D'
+import type { Chart3DContextValue } from '../../src/types'
 
 type TestInstance = ReactThreeTest.ReactThreeTestInstance
 

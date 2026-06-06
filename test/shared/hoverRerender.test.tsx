@@ -4,9 +4,9 @@ import type { ReactThreeTest } from '@react-three/test-renderer'
 import { Profiler, type ReactNode, useState } from 'react'
 import type * as THREE from 'three'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { BarSeries3D } from '../src/components/BarSeries3D'
-import { Chart3D } from '../src/components/Chart3D'
-import type { Datum } from '../src/types'
+import { BarSeries3D } from '../../src/components/BarSeries3D'
+import { Chart3D } from '../../src/components/Chart3D'
+import type { Datum } from '../../src/types'
 
 type TestInstance = ReactThreeTest.ReactThreeTestInstance
 

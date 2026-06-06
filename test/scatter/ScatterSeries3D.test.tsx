@@ -1,9 +1,9 @@
 import ReactThreeTestRenderer from '@react-three/test-renderer'
 import type * as THREE from 'three'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Chart3D } from '../src/components/Chart3D'
-import { ScatterSeries3D } from '../src/components/ScatterSeries3D'
-import type { Datum } from '../src/types'
+import { Chart3D } from '../../src/components/Chart3D'
+import { ScatterSeries3D } from '../../src/components/ScatterSeries3D'
+import type { Datum } from '../../src/types'
 
 const data: Datum[] = [
   { x: 1, y: 10, z: 1 },

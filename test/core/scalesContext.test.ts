@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createAxisScale, createScales, isBandScale } from '../src/core/scales'
-import type { ChartDimensions } from '../src/types'
+import { createAxisScale, createScales, isBandScale } from '../../src/core/scales'
+import type { ChartDimensions } from '../../src/types'
 
 /**
  * Context-level scale behavior that `scales.test.ts` (helper-level) does not pin:
