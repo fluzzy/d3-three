@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber'
-import { Axis3D, BarSeries3D, Chart3D, ScatterSeries3D } from 'd3-three'
 import type { Datum } from 'd3-three'
+import { Axis3D, BarSeries3D, Chart3D, ScatterSeries3D } from 'd3-three'
 import { useEffect, useRef, useState } from 'react'
 
 /**

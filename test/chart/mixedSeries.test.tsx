@@ -1,5 +1,5 @@
 import ReactThreeTestRenderer from '@react-three/test-renderer'
-import { type MockInstance, afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import type { Datum } from '../../src/types'
 
 // The mixed-series warning is one-shot (module-scoped guard), so each test gets

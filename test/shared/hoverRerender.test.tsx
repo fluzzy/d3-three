@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber'
-import ReactThreeTestRenderer from '@react-three/test-renderer'
 import type { ReactThreeTest } from '@react-three/test-renderer'
+import ReactThreeTestRenderer from '@react-three/test-renderer'
 import { Profiler, type ReactNode, useState } from 'react'
 import type * as THREE from 'three'
 import { afterEach, describe, expect, it, vi } from 'vitest'

@@ -1,5 +1,5 @@
-import ReactThreeTestRenderer from '@react-three/test-renderer'
 import type { ReactThreeTest } from '@react-three/test-renderer'
+import ReactThreeTestRenderer from '@react-three/test-renderer'
 import { scaleBand, scaleLinear } from 'd3-scale'
 import { describe, expect, it } from 'vitest'
 import { Axis3D } from '../../src/components/marks/Axis3D'

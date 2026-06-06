@@ -1,5 +1,5 @@
-import ReactThreeTestRenderer from '@react-three/test-renderer'
 import type { ReactThreeTest } from '@react-three/test-renderer'
+import ReactThreeTestRenderer from '@react-three/test-renderer'
 import { Profiler } from 'react'
 import * as THREE from 'three'
 import { afterEach, describe, expect, it, vi } from 'vitest'

@@ -1,12 +1,12 @@
-import ReactThreeTestRenderer from '@react-three/test-renderer'
 import type { ReactThreeTest } from '@react-three/test-renderer'
+import ReactThreeTestRenderer from '@react-three/test-renderer'
 import * as THREE from 'three'
 import { describe, expect, it, vi } from 'vitest'
 import { Chart3D } from '../../src/components/Chart3D'
 import { ScatterSeries3D } from '../../src/components/marks/ScatterSeries3D'
 import { axisPosition } from '../../src/core/scales'
-import { useSeriesLayout3D } from '../../src/hooks/useSeriesLayout3D'
 import type { SeriesLayout3D } from '../../src/hooks/useSeriesLayout3D'
+import { useSeriesLayout3D } from '../../src/hooks/useSeriesLayout3D'
 import type { Chart3DContextValue } from '../../src/types'
 
 type TestInstance = ReactThreeTest.ReactThreeTestInstance

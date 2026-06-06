@@ -86,7 +86,7 @@ export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSerie
   // Imperative hover: no React state → zero series re-renders.
   const setHover = (id: number) => {
     const mesh = ref.current
-    if (!mesh || !mesh.instanceColor) return
+    if (!mesh?.instanceColor) return
     const prev = hoveredRef.current
     if (id === prev) return
     const count = chart.data.length

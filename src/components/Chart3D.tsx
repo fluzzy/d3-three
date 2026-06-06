@@ -1,5 +1,5 @@
 import { useStore } from '@react-three/fiber'
-import { Children, type ReactElement, type ReactNode, isValidElement, useMemo } from 'react'
+import { Children, isValidElement, type ReactElement, type ReactNode, useMemo } from 'react'
 import { Chart3DContext } from '../context/Chart3DContext'
 import { createScales } from '../core/scales'
 import { validateData } from '../core/validation'

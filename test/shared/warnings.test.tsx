@@ -1,5 +1,5 @@
 import ReactThreeTestRenderer from '@react-three/test-renderer'
-import { type MockInstance, afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import { Chart3D } from '../../src/components/Chart3D'
 import { BarSeries3D } from '../../src/components/marks/BarSeries3D'
 import { ScatterSeries3D } from '../../src/components/marks/ScatterSeries3D'

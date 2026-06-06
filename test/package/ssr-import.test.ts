@@ -28,8 +28,9 @@ describe('SSR import smoke test (no DOM)', () => {
       'axisBandwidth',
       'DEFAULT_PALETTE',
     ] as const
+    const exported = new Set(Object.keys(api))
     for (const name of expected) {
-      expect(api[name as keyof typeof api], `missing export: ${name}`).toBeDefined()
+      expect(exported.has(name), `missing export: ${name}`).toBe(true)
     }
   })
 })
