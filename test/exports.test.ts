@@ -10,6 +10,15 @@ describe('public API surface', () => {
     expect(typeof api.useChart3D).toBe('function')
   })
 
+  it('exports the scale-position helpers for custom marks', () => {
+    // Custom-mark authors need the SAME positioning the built-in marks use:
+    // calling a band scale directly returns the band's left edge, not its
+    // center. These helpers give the correct world position.
+    expect(typeof api.axisPosition).toBe('function')
+    expect(typeof api.isBandScale).toBe('function')
+    expect(typeof api.axisBandwidth).toBe('function')
+  })
+
   it('has no default export', () => {
     expect((api as Record<string, unknown>).default).toBeUndefined()
   })

@@ -147,12 +147,26 @@ const {
   xScale, yScale, zScale, yBaseline,
   width, height, depth,
   bounds, // per-axis world-space [min, max] — exactly scale.range()
-  domain, // per-axis data extent — exactly scale.domain() (band → string[])
+  domain, // per-axis data extent in original units (band → string[])
 } = useChart3D()
 ```
 
 - **`bounds`** — `{ x, y, z? }`, each `[min, max]` in Three.js **world** coordinates (the Axis3D line endpoints). These come straight from `scale.range()`.
-- **`domain`** — `{ x, y, z? }` in **data** space (`scale.domain()`). Linear axes carry `[min, max]`; band (categorical) axes carry the `string[]` category list.
+- **`domain`** — `{ x, y, z? }` in **data** space, in original units. Linear axes carry the raw `[min, max]` data extent (the scale itself is `.nice()`'d for ticks, but `domain` reports the unrounded data range); band (categorical) axes carry the `string[]` category list.
+
+### Scale helpers
+
+Position custom marks with `axisPosition` — calling a band scale directly returns the band's **left edge**, not its center:
+
+```ts
+import { axisPosition, axisBandwidth, isBandScale } from 'd3-three'
+
+const x = axisPosition(xScale, d[xKey]) // band center, or the linear scaled value
+const w = axisBandwidth(xScale, 0.1) // band width, or the fallback for a linear axis
+if (isBandScale(xScale)) {
+  // xScale is narrowed to a d3 ScaleBand<string> here
+}
+```
 
 ## Colors
 

@@ -115,7 +115,7 @@ Types ship with the package (`dist/index.d.ts`), resolved automatically via the 
 Every built-in series reads the shared scales from context. You can do the same to render your own geometry:
 
 ```tsx
-import { useChart3D } from 'd3-three'
+import { useChart3D, axisPosition } from 'd3-three'
 import { useLayoutEffect, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -137,9 +137,9 @@ function MyPoints() {
     const mesh = ref.current!
     const m = new THREE.Matrix4()
     data.forEach((d, i) => {
-      const x = (xScale as (v: unknown) => number)(d[xKey])
+      const x = axisPosition(xScale, d[xKey])
       const y = yScale(Number(d[yKey]))
-      const z = zKey && zScale ? (zScale as (v: unknown) => number)(d[zKey]) : 0
+      const z = zKey && zScale ? axisPosition(zScale, d[zKey]) : 0
       m.setPosition(x, y, z)
       mesh.setMatrixAt(i, m)
     })

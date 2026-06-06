@@ -19,7 +19,16 @@ describe('README documents every shipped public export', () => {
   it('names each exported component + hook somewhere in the README', () => {
     const publicNames = Object.keys(api).filter((k) => k !== 'default')
     // The runtime exports (types are erased) we expect to be documented.
-    const documentedSurface = ['Chart3D', 'BarSeries3D', 'ScatterSeries3D', 'Axis3D', 'useChart3D']
+    const documentedSurface = [
+      'Chart3D',
+      'BarSeries3D',
+      'ScatterSeries3D',
+      'Axis3D',
+      'useChart3D',
+      'axisPosition',
+      'isBandScale',
+      'axisBandwidth',
+    ]
     // Sanity: the source really exports exactly this runtime surface.
     expect(publicNames.sort()).toEqual([...documentedSurface].sort())
     // Each is mentioned in the README.

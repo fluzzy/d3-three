@@ -1,6 +1,6 @@
-// Public API — d3-three v0.1
-// Components and the Chart3D context hook. Core utilities (scales/validation)
-// stay internal in v0.1; standalone hooks land in v0.2.
+// Public API — d3-three
+// Components, the Chart3D context hook, and the scale-position helpers for
+// building custom marks. (validateData / createScales stay internal.)
 
 export { Chart3D } from './components/Chart3D'
 export type { Chart3DProps } from './components/Chart3D'
@@ -15,6 +15,9 @@ export { Axis3D } from './components/Axis3D'
 export type { Axis3DProps } from './components/Axis3D'
 
 export { useChart3D } from './hooks/useChart3D'
+
+export { axisBandwidth, axisPosition, isBandScale } from './core/scales'
+export type { ChartScales } from './core/scales'
 
 export type {
   Datum,
