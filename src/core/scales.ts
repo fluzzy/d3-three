@@ -118,13 +118,7 @@ function axisDomain(scale: AxisScale): [number, number] | string[] {
   return [lo, hi]
 }
 
-/**
- * Data-space domain to REPORT for an axis, in original data units. Band scales
- * are not `.nice()`'d, so their `.domain()` is already the original category
- * list. Linear scales ARE `.nice()`'d (the scale's own domain rounds outward for
- * clean ticks), so we report the raw `[min, max]` extent of the data instead of
- * the rounded scale domain — keeping the contract "domain === original units".
- */
+/** Reported domain in ORIGINAL data units (band: categories; linear: raw extent, pre-nice). */
 function reportedDomain(scale: AxisScale, values: unknown[]): [number, number] | string[] {
   if (isBandScale(scale)) return scale.domain()
   const nums = values.filter((v): v is number => typeof v === 'number' && Number.isFinite(v))
