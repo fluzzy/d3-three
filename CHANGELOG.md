@@ -9,12 +9,26 @@ While on `0.x`, the public API may change between minor versions — pin a versi
 
 ## [Unreleased]
 
+### Added
+
+- **`<ChartLights>`** — opt-in lighting preset (`studio` 3-point rig / `flat`
+  shadeless) the host drops inside its `<Canvas>` so the unlit-by-default series
+  aren't black. `intensity` / `ambientColor` / `keyColor` knobs; renders only
+  Three.js lights and never owns the scene.
+- **`colorBy`** on `<BarSeries3D>` / `<ScatterSeries3D>` — per-instance coloring
+  from each datum: a bare string accessor is categorical through the new
+  **`DEFAULT_PALETTE`** (Tableau 10), `palette: string[]` a custom categorical
+  set, `palette: (n) => string` a continuous ramp, and `palette: 'raw'` a CSS
+  color. Hover still restores each mark to its own colorBy color with zero React
+  re-renders; unresolvable input falls back to `color` and dev-warns once.
+- **`useSeriesLayout3D()`** — headless per-row world layout (`x` / `y` / `z`,
+  `yBaseline`, band footprint) the built-in marks consume, for building custom
+  instanced marks (`SeriesLayout3D` / `SeriesLayoutRow3D`).
+
 ### Planned (v0.2)
 
 - `<GridPlane3D>` — reference grid built from the in-plane scales' ticks.
-- `<ChartLights>` — drop-in lighting helper (v0.1 leaves lighting to the host).
-- `colorBy` + a `d3-scale-chromatic` palette library for automatic per-datum /
-  per-group coloring (v0.1 is the single `color` prop only).
+- A `d3-scale-chromatic` palette library for richer built-in `colorBy` palettes.
 
 ## [0.1.0]
 

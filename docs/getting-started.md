@@ -65,7 +65,7 @@ export function App() {
 
 That's the whole integration: `npm install`, drop `<Chart3D>` into a `<Canvas>`, done.
 
-> **Lighting is the host's job in v0.1.** The series default to `meshStandardMaterial`, which is unlit and renders **black** without lights. Add your own `ambientLight` / `directionalLight` (shown above). A drop-in `<ChartLights>` helper is on the v0.2 roadmap.
+> **Lighting is the host's job.** The series default to `meshStandardMaterial`, which is unlit and renders **black** without lights. Drop in the `<ChartLights>` preset (`studio` / `flat`), or add your own `ambientLight` / `directionalLight` (shown above).
 
 > **One series type per chart.** `BarSeries3D` needs a band (string) x axis and `ScatterSeries3D` needs a linear (numeric) one, so use separate `<Chart3D>` roots for each — `Chart3D` dev-warns if it detects both under one root.
 

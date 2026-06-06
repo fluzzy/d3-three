@@ -1,7 +1,7 @@
 # d3-three
 
 [![npm version](https://img.shields.io/npm/v/d3-three.svg)](https://www.npmjs.com/package/d3-three)
-[![bundle size](https://img.shields.io/badge/gzip-~13.5%20KB-blue.svg)](https://bundlephobia.com/package/d3-three)
+[![bundle size](https://img.shields.io/badge/gzip-~13.6%20KB-blue.svg)](https://bundlephobia.com/package/d3-three)
 [![license](https://img.shields.io/npm/l/d3-three.svg)](./LICENSE)
 
 > Drop 3D charts into your **existing** [React Three Fiber](https://r3f.docs.pmnd.rs) scene. No new renderer, no `drei` dependency — just `<Chart3D>` inside the `<Canvas>` you already have.
@@ -17,7 +17,7 @@ Most data is better as a flat 2D chart, and you should reach for [Recharts](http
 - **D3 scales** — automatic band (categorical) vs. linear (numeric) per axis.
 - **InstancedMesh everywhere** — one draw call per series; renders 10k+ instances as a single `InstancedMesh`.
 - **No `drei` dependency** — text and axes are built in.
-- **Tiny** — ~13.5 KB (gzip), tree-shakeable, ESM + CJS.
+- **Tiny** — ~13.6 KB (gzip), tree-shakeable, ESM + CJS.
 
 ## Install
 
@@ -231,7 +231,7 @@ For per-datum coloring, pass **`colorBy`** to `BarSeries3D` / `ScatterSeries3D`.
 ## Performance
 
 - Every series is a single `InstancedMesh` — one draw call per series; renders 10k+ instances as a single `InstancedMesh`. Hover recolors only the two affected instances, imperatively (no React re-render), and calls `invalidate()` so it works with `frameloop="demand"`.
-- Bundle: **~13.5 KB** (gzip), `sideEffects: false`, tree-shakeable.
+- Bundle: **~13.6 KB** (gzip), `sideEffects: false`, tree-shakeable.
 - `three`, `@react-three/fiber`, `react`, `react-dom` are peers — never bundled.
 
 ## Accessibility
