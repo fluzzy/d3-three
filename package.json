@@ -50,6 +50,7 @@
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:build": "vitest run -c vitest.build.config.ts",
     "typecheck": "tsc --noEmit",
     "size": "size-limit",
     "lint": "biome check .",

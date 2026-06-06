@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
   // Force a SINGLE copy of three across three / @react-three/fiber /
@@ -19,6 +19,9 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./test/setup.ts'],
+    // Keep the slow real-build + size-limit gate out of the default `vitest run`;
+    // run it explicitly via `pnpm test:build`.
+    exclude: [...configDefaults.exclude, '**/build.test.ts'],
     server: {
       deps: {
         // Inline R3F + three so they resolve through one module graph.
