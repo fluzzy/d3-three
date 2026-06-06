@@ -63,14 +63,20 @@ export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSerie
   const base = useMemo(() => new Color(color), [color])
   const highlight = useMemo(() => new Color(highlightColor), [highlightColor])
 
-  // Over-provision GPU capacity and grow it monotonically. `args` (hence the host
-  // InstancedMesh) only changes when the data outgrows the capacity, so ordinary
-  // row-count changes reuse the same mesh; `mesh.count` drives what renders.
+  // Over-provision GPU capacity and grow it monotonically. Writing the ref during
+  // render is safe because growCapacity is idempotent + monotonic — StrictMode's
+  // double render can only re-grow to the same value, never under-provision.
+  // `args` (hence the host InstancedMesh) only changes when the data outgrows the
+  // capacity, so ordinary row-count changes reuse the same mesh + GPU buffers;
+  // `mesh.count` drives what renders. Capacity is a high-water-mark (not reclaimed).
   const capacityRef = useRef(0)
   capacityRef.current = growCapacity(capacityRef.current, chart.data.length)
   const capacity = Math.max(capacityRef.current, 1)
 
-  // Transforms — rewritten only when the chart or the memoized writer changes.
+  // Transforms — rewritten when the data identity or the memoized writer changes.
+  // Chart3D returns a fresh `data` array on every data/keys/dims change, and
+  // writeAll's identity tracks the scales/size it closes over, so these two deps
+  // cover every layout input.
   useLayoutEffect(() => {
     const mesh = ref.current
     if (!mesh) return
@@ -78,9 +84,11 @@ export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSerie
     mesh.count = chart.data.length
     mesh.instanceMatrix.needsUpdate = true
     invalidate()
-  }, [chart, writeAll, invalidate])
+  }, [chart.data, writeAll, invalidate])
 
-  // Base colors — repainted only when the data or the base color changes.
+  // Base colors — repainted when the data identity or the base color changes.
+  // v0.1 is a single color, so every instance gets `base`; v0.2 colorBy must move
+  // BOTH this paint and the hover restore in setHover to a per-index lookup.
   useLayoutEffect(() => {
     const mesh = ref.current
     if (!mesh) return
@@ -89,13 +97,15 @@ export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSerie
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
     hoveredRef.current = -1
     invalidate()
-  }, [chart, base, invalidate])
+  }, [chart.data, base, invalidate])
 
   const setHover = (id: number) => {
     const mesh = ref.current
     if (!mesh || !mesh.instanceColor) return
     const prev = hoveredRef.current
     if (id === prev) return
+    // Clamp to the LIVE row count (not capacity): a stale hovered index left from
+    // a larger previous dataset must not write past the now-shrunk range.
     const count = chart.data.length
     if (prev >= 0 && prev < count) mesh.setColorAt(prev, base)
     if (id >= 0 && id < count) mesh.setColorAt(id, highlight)
