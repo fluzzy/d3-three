@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import type { InstancedMesh } from 'three'
-import { axisPosition, isBandScale } from '../../core/scales'
-import { useChart3D } from '../../hooks/useChart3D'
+import { isBandScale } from '../../core/scales'
+import { useSeriesLayout3D } from '../../hooks/useSeriesLayout3D'
 import { writePoint } from '../../internal/instancing'
 import { useInstancedSeries } from '../../internal/useInstancedSeries'
 import { useWarnOnce } from '../../internal/useWarnOnce'
-import type { Datum, SeriesBaseProps } from '../../types'
+import type { SeriesBaseProps } from '../../types'
 
 export interface ScatterSeries3DProps extends SeriesBaseProps {
   /** uniform sphere radius in world units (default 0.15). */
@@ -34,25 +34,21 @@ export function ScatterSeries3D({
   onPointerOut,
   size = 0.15,
 }: ScatterSeries3DProps) {
-  const chart = useChart3D()
-  const { xKey, yKey, zKey, xScale, yScale, zScale } = chart
+  const layout = useSeriesLayout3D()
+  const { chart } = layout
+  const { xScale, zScale, zKey } = chart
 
   useWarnOnce(zKey ? undefined : FLAT_PLANE_WARNING)
   const hasBandAxis = isBandScale(xScale) || (zScale !== undefined && isBandScale(zScale))
   useWarnOnce(hasBandAxis ? CONTINUOUS_AXIS_WARNING : undefined)
 
-  // Points: direct linear positions, uniform `size` on every axis (no baseline).
   const writeAll = useCallback(
-    (mesh: InstancedMesh, rows: Datum[]) => {
-      for (let i = 0; i < rows.length; i++) {
-        const d = rows[i]
-        const x = axisPosition(xScale, d[xKey])
-        const y = yScale(Number(d[yKey]))
-        const z = zKey ? axisPosition(zScale!, d[zKey]) : 0
-        writePoint(mesh, i, { x, y, z, size })
+    (mesh: InstancedMesh) => {
+      for (const { x, y, z, index } of layout.rows) {
+        writePoint(mesh, index, { x, y, z, size })
       }
     },
-    [xScale, yScale, zScale, xKey, yKey, zKey, size],
+    [layout, size],
   )
 
   const { ref, capacity, handlers } = useInstancedSeries({

@@ -1,16 +1,13 @@
 import { useCallback } from 'react'
 import type { InstancedMesh } from 'three'
-import { axisBandwidth, axisPosition, isBandScale } from '../../core/scales'
-import { useChart3D } from '../../hooks/useChart3D'
+import { isBandScale } from '../../core/scales'
+import { useSeriesLayout3D } from '../../hooks/useSeriesLayout3D'
 import { writeBox } from '../../internal/instancing'
 import { useInstancedSeries } from '../../internal/useInstancedSeries'
 import { useWarnOnce } from '../../internal/useWarnOnce'
-import type { Datum, SeriesBaseProps } from '../../types'
+import type { SeriesBaseProps } from '../../types'
 
 export type BarSeries3DProps = SeriesBaseProps
-
-/** Fallback bar footprint (world units) when fed a non-band (linear) x/z axis. */
-const LINEAR_BAR_WIDTH = 0.5
 
 const BAND_AXIS_WARNING =
   'BarSeries3D expects a categorical (band) x axis (string xKey values); got a continuous one. Use ScatterSeries3D for numeric x.'
@@ -31,27 +28,27 @@ export function BarSeries3D({
   onPointerOver,
   onPointerOut,
 }: BarSeries3DProps) {
-  const chart = useChart3D()
-  const { xKey, yKey, zKey, xScale, yScale, zScale, yBaseline } = chart
+  const layout = useSeriesLayout3D()
+  const { chart } = layout
 
-  useWarnOnce(isBandScale(xScale) ? undefined : BAND_AXIS_WARNING)
+  useWarnOnce(isBandScale(chart.xScale) ? undefined : BAND_AXIS_WARNING)
 
-  // Bars: band-width footprint, growing from the yScale(0) baseline. Negative
-  // values grow downward (their top sits at the baseline).
   const writeAll = useCallback(
-    (mesh: InstancedMesh, rows: Datum[]) => {
-      const width = axisBandwidth(xScale, LINEAR_BAR_WIDTH)
-      const depth = zScale ? axisBandwidth(zScale, LINEAR_BAR_WIDTH) : width
-      for (let i = 0; i < rows.length; i++) {
-        const d = rows[i]
-        const x = axisPosition(xScale, d[xKey])
-        const z = zKey ? axisPosition(zScale!, d[zKey]) : 0
-        const top = yScale(Number(d[yKey]))
-        const height = Math.abs(top - yBaseline)
-        writeBox(mesh, i, { x, y: (top + yBaseline) / 2, z, width, height, depth })
+    (mesh: InstancedMesh) => {
+      const { rows, yBaseline, bandWidth, bandDepth } = layout
+      for (const { x, y, z, index } of rows) {
+        // Box is centered, so a bar from yBaseline to y has center (y+base)/2.
+        writeBox(mesh, index, {
+          x,
+          y: (y + yBaseline) / 2,
+          z,
+          width: bandWidth,
+          height: Math.abs(y - yBaseline),
+          depth: bandDepth,
+        })
       }
     },
-    [xScale, zScale, yScale, yBaseline, xKey, yKey, zKey],
+    [layout],
   )
 
   const { ref, capacity, handlers } = useInstancedSeries({
