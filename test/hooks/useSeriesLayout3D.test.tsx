@@ -217,6 +217,31 @@ describe('useSeriesLayout3D yBaseline + memoization', () => {
   })
 })
 
+describe('useSeriesLayout3D with no valid rows', () => {
+  it('empty data → rows: [] without throwing, and pins the empty-band footprint', async () => {
+    let layout: SeriesLayout3D | undefined
+    function Cap() {
+      layout = useSeriesLayout3D()
+      return null
+    }
+    const renderer = await ReactThreeTestRenderer.create(
+      <Chart3D data={[]} xKey="x" yKey="y">
+        <Cap />
+      </Chart3D>,
+    )
+    const l = layout!
+    expect(l.rows).toHaveLength(0)
+    // empty data infers a band x scale; bandWidth is its (non-zero) empty-band
+    // bandwidth, NOT the 0.5 linear fallback — pin it against the scale so a
+    // future padding/range change is caught.
+    const xScale = l.chart.xScale as unknown as { bandwidth: () => number }
+    expect(l.bandWidth).toBeCloseTo(xScale.bandwidth(), 5)
+    expect(l.bandDepth).toBeCloseTo(l.bandWidth, 5)
+    expect(l.yBaseline).toBe(l.chart.yScale(0))
+    await renderer.unmount()
+  })
+})
+
 describe('Chart3DContextValue type sanity for layout consumers', () => {
   it('exposes the chart context on the layout result', async () => {
     let layout: SeriesLayout3D | undefined
