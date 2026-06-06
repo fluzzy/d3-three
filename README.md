@@ -168,6 +168,20 @@ if (isBandScale(xScale)) {
 }
 ```
 
+### `useSeriesLayout3D()`
+
+Headless per-row world positions, computed exactly like the built-in marks — for building a custom instanced mark (a cylinder series, a custom glyph) without re-deriving the scale math. Must be called inside a `<Chart3D>`.
+
+```tsx
+const { rows, yBaseline, bandWidth, bandDepth, chart } = useSeriesLayout3D()
+// rows[i] = { datum, index, x, y, z } in world space; row i aligns with built-in instance i.
+```
+
+- **`rows`** — one `{ datum, index, x, y, z }` per validated row; `x`/`z` are band centers for band axes and the scaled value for linear axes, `y` is `yScale(value)`.
+- **`yBaseline`** — world-space y for value 0 (bars grow from here).
+- **`bandWidth` / `bandDepth`** — the x / z footprint per row (band width, or a `fallback` for linear axes; pass `useSeriesLayout3D({ fallback })` to override, default `0.5`).
+- **`chart`** — the `useChart3D()` context, exposed so a custom mark reads it once.
+
 ## Colors
 
 v0.1 colors a series with the single **`color`** prop (a CSS color string, default `steelblue`), applied per-instance via `setColorAt`. Any string `three.Color` accepts works. Automatic per-datum palettes (`colorBy`) and a `d3-scale-chromatic` palette library are on the [v0.2 roadmap](#roadmap) — purely additive, no breaking change.

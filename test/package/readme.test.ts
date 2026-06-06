@@ -25,6 +25,7 @@ describe('README documents every shipped public export', () => {
       'ScatterSeries3D',
       'Axis3D',
       'useChart3D',
+      'useSeriesLayout3D',
       'axisPosition',
       'isBandScale',
       'axisBandwidth',

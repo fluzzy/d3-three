@@ -16,6 +16,9 @@ export type { Axis3DProps } from './components/marks/Axis3D'
 
 export { useChart3D } from './hooks/useChart3D'
 
+export { useSeriesLayout3D } from './hooks/useSeriesLayout3D'
+export type { SeriesLayout3D, SeriesLayoutRow3D } from './hooks/useSeriesLayout3D'
+
 export { axisBandwidth, axisPosition, isBandScale } from './core/scales'
 export type { ChartScales } from './core/scales'
 

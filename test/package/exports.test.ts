@@ -19,6 +19,10 @@ describe('public API surface', () => {
     expect(typeof api.axisBandwidth).toBe('function')
   })
 
+  it('exports the headless layout hook for custom marks', () => {
+    expect(typeof api.useSeriesLayout3D).toBe('function')
+  })
+
   it('has no default export', () => {
     expect((api as Record<string, unknown>).default).toBeUndefined()
   })
