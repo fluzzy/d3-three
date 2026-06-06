@@ -25,14 +25,15 @@ export interface ResolveColorsResult {
   invalid: boolean
 }
 
-// new Color('bad') warns and silently returns WHITE rather than throwing, so a
-// sentinel probe is the only reliable way to detect an unparseable string and
-// honor the caller's fallback instead of poisoning the instance with white.
-const SENTINEL = 0x010203
+// new Color('bad') warns and silently returns WHITE rather than throwing. Probe
+// from two different seeds: a parseable string drives both to the same hex; an
+// unparseable one leaves each at its (distinct) seed. This honors the caller's
+// fallback with no in-gamut collision (a single sentinel would reject its own
+// color, e.g. #010203).
 function parseColor(input: string, fallback: Color): { color: Color; ok: boolean } {
-  const c = new Color(SENTINEL)
-  c.set(input)
-  return c.getHex() === SENTINEL ? { color: fallback.clone(), ok: false } : { color: c, ok: true }
+  const a = new Color(0x000000).set(input)
+  const b = new Color(0xffffff).set(input)
+  return a.getHex() === b.getHex() ? { color: a, ok: true } : { color: fallback.clone(), ok: false }
 }
 
 /**

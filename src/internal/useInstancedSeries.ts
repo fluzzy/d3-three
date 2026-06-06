@@ -73,10 +73,15 @@ export function useInstancedSeries(opts: InstancedSeriesOptions): InstancedSerie
     if (!mesh) return
     const rows = chart.data
     for (let i = 0; i < rows.length; i++) mesh.setColorAt(i, colors?.[i] ?? base)
+    // Re-apply an active highlight instead of clearing it: a colorBy series with
+    // an inline accessor re-runs this effect on every parent re-render, which
+    // must not wipe the hovered instance. Clamp only when the row no longer exists.
+    const hovered = hoveredRef.current
+    if (hovered >= 0 && hovered < rows.length) mesh.setColorAt(hovered, highlight)
+    else hoveredRef.current = -1
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
-    hoveredRef.current = -1
     invalidate()
-  }, [chart.data, base, colors, invalidate])
+  }, [chart.data, base, colors, highlight, invalidate])
 
   // Imperative hover: no React state → zero series re-renders.
   const setHover = (id: number) => {

@@ -88,4 +88,14 @@ describe('resolveColors', () => {
       resolveColors([{ c: 'nope' }], { value: (d) => d.c as string, palette: 'raw' }, 'steelblue'),
     ).not.toThrow()
   })
+
+  it('accepts a legitimate near-black color (no single-sentinel collision)', () => {
+    const r = resolveColors(
+      [{ c: '#010203' }],
+      { value: (d) => d.c as string, palette: 'raw' },
+      'steelblue',
+    )!
+    expect(r.invalid).toBe(false)
+    expect(r.colors[0].getHex()).toBe(hex('#010203'))
+  })
 })
