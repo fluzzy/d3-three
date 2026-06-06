@@ -118,6 +118,19 @@ function axisDomain(scale: AxisScale): [number, number] | string[] {
   return [lo, hi]
 }
 
+/**
+ * Data-space domain to REPORT for an axis, in original data units. Band scales
+ * are not `.nice()`'d, so their `.domain()` is already the original category
+ * list. Linear scales ARE `.nice()`'d (the scale's own domain rounds outward for
+ * clean ticks), so we report the raw `[min, max]` extent of the data instead of
+ * the rounded scale domain — keeping the contract "domain === original units".
+ */
+function reportedDomain(scale: AxisScale, values: unknown[]): [number, number] | string[] {
+  if (isBandScale(scale)) return scale.domain()
+  const nums = values.filter((v): v is number => typeof v === 'number' && Number.isFinite(v))
+  return safeLinearDomain(nums)
+}
+
 /** Builds the x/y/z scales (and the y baseline) for a Chart3D context. */
 export function createScales(
   data: Record<string, unknown>[],
@@ -126,18 +139,12 @@ export function createScales(
   zKey: string | undefined,
   dims: ChartDimensions,
 ): ChartScales {
-  const xScale = createAxisScale(
-    data.map((d) => d[xKey]),
-    dims.width,
-  )
+  const xRaw = data.map((d) => d[xKey])
+  const xScale = createAxisScale(xRaw, dims.width)
   const yValues = data.map((d) => Number(d[yKey])).filter((v) => Number.isFinite(v))
   const yScale = createYScale(yValues, dims.height)
-  const zScale = zKey
-    ? createAxisScale(
-        data.map((d) => d[zKey]),
-        dims.depth,
-      )
-    : undefined
+  const zRaw = zKey ? data.map((d) => d[zKey]) : undefined
+  const zScale = zRaw ? createAxisScale(zRaw, dims.depth) : undefined
   return {
     xScale,
     yScale,
@@ -149,9 +156,9 @@ export function createScales(
       ...(zScale ? { z: axisRange(zScale) } : {}),
     },
     domain: {
-      x: axisDomain(xScale),
+      x: reportedDomain(xScale, xRaw),
       y: axisDomain(yScale) as [number, number],
-      ...(zScale ? { z: axisDomain(zScale) } : {}),
+      ...(zScale && zRaw ? { z: reportedDomain(zScale, zRaw) } : {}),
     },
   }
 }

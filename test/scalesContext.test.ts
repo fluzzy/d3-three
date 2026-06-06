@@ -123,3 +123,36 @@ describe('createScales only ever instantiates band or linear', () => {
     expect(typeof (s.yScale as (n: number) => number)(0)).toBe('number')
   })
 })
+
+describe('linear axis domain reports the original data extent, not the niced scale domain', () => {
+  it('linear x domain is the raw [min, max], even though the scale is niced for ticks', () => {
+    const data = [
+      { x: 3, v: 1 },
+      { x: 50, v: 2 },
+      { x: 97, v: 3 },
+    ]
+    const s = createScales(data, 'x', 'v', undefined, DIMS)
+    expect(isBandScale(s.xScale)).toBe(false)
+    // The scale itself is .nice()'d (ticks land on round numbers) but the
+    // reported data-space domain must stay the ORIGINAL extent, not [0, 100].
+    expect(s.domain.x).toEqual([3, 97])
+  })
+
+  it('linear z domain is the raw [min, max]', () => {
+    const data = [
+      { x: 'a', v: 1, z: 5 },
+      { x: 'b', v: 2, z: 88 },
+    ]
+    const s = createScales(data, 'x', 'v', 'z', DIMS)
+    expect(s.domain.z).toEqual([5, 88])
+  })
+
+  it('band axis domain stays the original category list', () => {
+    const data = [
+      { x: 'Jan', v: 1 },
+      { x: 'Feb', v: 2 },
+    ]
+    const s = createScales(data, 'x', 'v', undefined, DIMS)
+    expect(s.domain.x).toEqual(['Jan', 'Feb'])
+  })
+})
