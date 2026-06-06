@@ -11,6 +11,22 @@ function isValidCoord(value: unknown): boolean {
   return false
 }
 
+/**
+ * A y coordinate is valid only if it is a finite number or a clean numeric
+ * string (e.g. "42"). null/undefined/empty/whitespace/boolean/array/object are
+ * REJECTED: a loose `Number()` coerces those to 0 (or 1 for `true`), which would
+ * plant a phantom 0-height mark at the baseline — the same misleading outcome as
+ * the forbidden clamp-to-0.
+ */
+function isFiniteNumberLike(value: unknown): boolean {
+  if (typeof value === 'number') return Number.isFinite(value)
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    return trimmed.length > 0 && Number.isFinite(Number(trimmed))
+  }
+  return false
+}
+
 export interface ValidateOptions {
   xKey: string
   yKey: string
@@ -53,7 +69,7 @@ export function validateData(data: unknown, opts: ValidateOptions): Datum[] {
       droppedMissing++
       continue
     }
-    const yOk = Number.isFinite(Number(d[yKey]))
+    const yOk = isFiniteNumberLike(d[yKey])
     const xOk = isValidCoord(d[xKey])
     const zOk = !zKey || isValidCoord(d[zKey])
     if (yOk && xOk && zOk) {

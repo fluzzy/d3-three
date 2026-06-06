@@ -106,4 +106,28 @@ describe('validateData', () => {
     )
     expect(warn).toHaveBeenCalledTimes(1)
   })
+
+  it('drops a row whose y is null/empty/boolean/array, never coercing it to 0', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    // Number(null)===0, Number('')===0, Number('  ')===0, Number(true)===1,
+    // Number([])===0, Number([5])===5 are ALL finite — a loose Number() gate
+    // would plant a 0-height ghost mark at the baseline. y must be a real
+    // finite number (or a clean numeric string), like x/z.
+    expect(validateData([{ x: 'Jan', y: null }], OPTS)).toEqual([])
+    expect(validateData([{ x: 'Jan', y: '' }], OPTS)).toEqual([])
+    expect(validateData([{ x: 'Jan', y: '   ' }], OPTS)).toEqual([])
+    expect(validateData([{ x: 'Jan', y: true }], OPTS)).toEqual([])
+    expect(validateData([{ x: 'Jan', y: false }], OPTS)).toEqual([])
+    expect(validateData([{ x: 'Jan', y: [] }], OPTS)).toEqual([])
+    expect(validateData([{ x: 'Jan', y: [5] }], OPTS)).toEqual([])
+    expect(validateData([{ x: 'Jan', y: {} }], OPTS)).toEqual([])
+    expect(warn).toHaveBeenCalled()
+  })
+
+  it('keeps a row whose y is a finite numeric string', () => {
+    // y is numeric/continuous; a clean numeric string coerces to a finite
+    // number and is kept (Recharts-style data is often stringly typed).
+    expect(validateData([{ x: 'Jan', y: '42' }], OPTS)).toEqual([{ x: 'Jan', y: '42' }])
+    expect(validateData([{ x: 'Jan', y: '-3.5' }], OPTS)).toEqual([{ x: 'Jan', y: '-3.5' }])
+  })
 })
